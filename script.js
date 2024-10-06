@@ -106,4 +106,5 @@ const displayPrimes = (n, current = 2) => {
 
 // Start the calculation with n equal to 10,000
 trampoline(displayPrimes, 10000);
+console.log("Psst, look at the html element to see the result");
 console.groupEnd();
