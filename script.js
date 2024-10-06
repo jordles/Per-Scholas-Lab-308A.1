@@ -77,3 +77,44 @@ trampoline(recursiveFlatten, [1, [2, [3, [4]]]]);
 
 console.groupEnd();
 
+/* -------------------------------------------------------------------------- */
+/*                         PART 3: DEFERRED EXECUTION                         */
+/* -------------------------------------------------------------------------- */
+// Create a simple HTML element to hold text. Cache this HTML element into a JavaScript variable.
+// Write a function that takes a parameter n and adds a list of all prime numbers between one and n to your HTML element.
+// Once complete, use the alert() method to alert the user that the calculation is finished.
+
+console.group("Part 3: Deferred Execution");
+const element = document.createElement("p");
+document.body.appendChild(element);
+
+const isPrime = (num) => {
+  if (num <= 1) return false;
+  for (let i = 2; i <= Math.sqrt(num); i++) {
+      if (num % i === 0) return false;
+  }
+  return true;
+};
+// Function to display prime numbers up to n using trampoline
+const displayPrimes = (n, current = 2) => {
+  // If current exceeds n, show alert and stop recursion
+  if (current > n) {
+      return () => {
+          alert('Calculation finished!');
+      };
+  }
+
+  // If current is prime, display it
+  if (isPrime(current)) {
+      element.textContent += current + '\n'; // Add prime number to the div
+  }
+
+  // Use setTimeout to allow browser rendering and return the next function call
+  return () => {
+      setTimeout(() => trampoline(displayPrimes, n, current + 1), 0);
+  };
+};
+
+// Start the calculation with n equal to 10,000
+trampoline(displayPrimes, 10000);
+console.groupEnd();
