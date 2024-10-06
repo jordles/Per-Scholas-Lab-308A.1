@@ -89,30 +89,19 @@ const element = document.createElement("p");
 document.body.appendChild(element);
 
 const isPrime = (num) => {
-  if (num <= 1) return false;
+  if (num < 2) return false;
   for (let i = 2; i <= Math.sqrt(num); i++) {
       if (num % i === 0) return false;
   }
   return true;
 };
-// Function to display prime numbers up to n using trampoline
+
 const displayPrimes = (n, current = 2) => {
-  // If current exceeds n, show alert and stop recursion
-  if (current > n) {
-      return () => {
-          alert('Calculation finished!');
-      };
-  }
-
-  // If current is prime, display it
-  if (isPrime(current)) {
-      element.textContent += current + '\n'; // Add prime number to the div
-  }
-
+  if (current > n) return () => alert('Calculation finished!');
+  if (isPrime(current)) element.textContent += current + '\n';
   // Use setTimeout to allow browser rendering and return the next function call
-  return () => {
-      setTimeout(() => trampoline(displayPrimes, n, current + 1), 0);
-  };
+  return () => setTimeout(() => trampoline(displayPrimes, n, current + 1), 0); 
+  //we have to call trampoline here again, because setTimeout is async (tested through javascript visualizer; without calling trampoline we broke out of the while loop (from trampoline function) since setTimeout delays the next function call)
 };
 
 // Start the calculation with n equal to 10,000
